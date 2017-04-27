@@ -1,5 +1,10 @@
 Django==1.11
+Pillow==4.1.0
 argparse==1.2.1
 django-bootstrap3==8.2.2
+django-braces==1.11.0
+django-multiselectfield==0.1.5
+django-smartfields==1.0.9
+olefile==0.44
 pytz==2017.2
 wsgiref==0.1.2

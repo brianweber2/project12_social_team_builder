@@ -22,7 +22,9 @@
 
   <!-- CSS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
+  <!-- <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}"> -->
   <link rel="stylesheet" href="{% static 'css/global.css' %}">
+  <link rel="stylesheet" href="{% static 'css/custom.css' %}">
 
   <!-- JS
   –––––––––––––––––––––––––––––––––––––––––––––––––– -->
@@ -54,7 +56,7 @@
           <nav>
             <ul class="circle--inline">
               {% if user.is_authenticated %}
-              <li><a href="#">Profile</a></li>
+              <li><a href="{% url 'accounts:profile' username=user.username %}">Profile</a></li>
               <li><a href="{% url 'accounts:logout' %}">Logout</a></li>
               {% else %}
               <li><a href="{% url 'accounts:signup' %}">Sign Up</a></li>

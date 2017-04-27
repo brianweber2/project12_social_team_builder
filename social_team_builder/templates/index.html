@@ -2,6 +2,12 @@
 {% load static from staticfiles %}
 
 {% block body_content %}
+  <!-- If there are any messages, print them out to the view. -->
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
   <div class="bounds circle--page">
     <div class="circle--page--header circle--fluid">
       <div class="circle--fluid--cell circle--fluid--primary">

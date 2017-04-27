@@ -1,0 +1,47 @@
+/* Placing form fields next to each other */
+.form-field-right {
+    float: right;
+    width: 48%;
+}
+
+.form-field-left {
+    float: left;
+    width: 48%;
+}
+
+.alert-success{
+    color:#3c763d;
+    background-color:#dff0d8;
+    border-color:#d6e9c6
+}
+
+.alert-success hr{
+    border-top-color:#c9e2b3
+}
+
+.alert-success .alert-link{
+    color:#2b542c
+}
+
+.alert{
+    padding:15px;
+    margin-bottom:20px;
+    border:1px solid transparent;
+    border-radius:4px;
+    text-align: center;
+}
+
+.alert h4{
+    margin-top:0;
+    color:inherit
+}
+.alert .alert-link{
+    font-weight:700
+}
+.alert>p, .alert>ul{
+    margin-bottom:0
+}
+
+.alert>p+p{
+    margin-top:5px
+}

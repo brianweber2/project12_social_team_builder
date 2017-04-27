@@ -10,11 +10,21 @@ class UserProfileInline(admin.StackedInline):
 
 
 class UserAdmin(admin.ModelAdmin):
-    search_fields = ['username', 'email', 'first_name' ,'last_name']
-    list_display = ['username', 'first_name', 'last_name', 'display_name',
-                    'email', 'is_active', 'is_staff']
+    search_fields = ['username', 'email', 'userprofile__firstname',
+                     'userprofile__lastname']
+    list_display = ['username', 'email', 'get_firstname', 'get_lastname',
+                    'is_active', 'is_staff']
     list_filter = ['is_active', 'is_staff', 'date_joined']
-
     inlines = (UserProfileInline, )
+
+    def get_firstname(self, obj):
+        return obj.userprofile.firstname
+    get_firstname.short_description = 'First Name'
+    get_firstname.admin_order_field = 'userprofile'
+
+    def get_lastname(self, obj):
+        return obj.userprofile.lastname
+    get_lastname.short_description = 'Last Name'
+    get_firstname.admin_order_field = 'userprofile'
 
 admin.site.register(models.User, UserAdmin)
