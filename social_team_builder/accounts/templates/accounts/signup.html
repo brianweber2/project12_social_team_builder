@@ -1,0 +1,18 @@
+{% extends "layout.html" %}
+{% load static from staticfiles %}
+{% load bootstrap3 %}
+
+{% block body_content %}
+  <div class="bounds">
+    <div class="grid-50 centered">
+      <h2>Sign Up</h2>
+      <form>
+        {% csrf_token %}
+        {% bootstrap_form form %}
+        <br>
+        <button class="button-primary">Sign Up</button>
+        <a class="button" href="{% url 'login' %}">Sign In</a>
+      </form>
+    </div>
+  </div>
+{% endblock %}

@@ -89,4 +89,4 @@ ENV/
 .ropeproject
 
 # Other folders
-project-files/
+.project-files/
