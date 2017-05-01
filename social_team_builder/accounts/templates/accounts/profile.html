@@ -32,9 +32,9 @@
 
 
     <div class="grid-70">
-      <h1>{{ user.userprofile.firstname }} {{ user.userprofile.lastname }}</h1>
+      <h1>{{ profile.firstname }} {{ profile.lastname }}</h1>
       <div class="circle--article--body">
-        {{ user.userprofile.bio|linebreaks }}
+        {{ profile.bio|linebreaks }}
       </div>
 
       <h2>Past Projects</h2>
@@ -70,8 +70,8 @@
 
       <div class="circle--secondary--module">
         <div class="circle--primary--avatar">
-          {% if user.userprofile.avatar %}
-            <img src="{{ user.userprofile.avatar.url }}" height="150px">
+          {% if profile.avatar %}
+            <img src="{{ profile.avatar.url }}" height="150px">
           {% else %}
             <img src="{% static 'images/avatar_placeholder.jpg' %}" width="150px" height="150px">
           {% endif %}

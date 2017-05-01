@@ -16,7 +16,7 @@ from . import models
 class SignUpView(SuccessMessageMixin, generic.CreateView):
     """View to allow user to sign up."""
     form_class = forms.UserCreateForm
-    success_url = reverse_lazy('accounts:profile')
+    success_url = reverse_lazy('accounts:signin')
     template_name = 'accounts/signup.html'
     success_message = "Your account has been created!"
 
@@ -56,7 +56,6 @@ class UserProfileView(LoginRequiredMixin, generic.TemplateView):
         profile = models.UserProfile.objects.prefetch_related('skills').get(user=user)
         context['profile'] = profile
         context['skills'] = [skill for skill in profile.skills.all()]
-        print(context['skills'])
         return context
 
 
@@ -94,6 +93,7 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.Upd
             profiledata = form2.save(commit=False)
             profiledata.user = userdata
             profiledata.save()
+            form2.save_m2m()
             return HttpResponseRedirect(self.get_success_url())
         else:
             return self.render_to_response(

@@ -44,7 +44,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField(unique=True)
-    username = models.CharField(max_length=40, unique=True)
+    username = models.CharField(max_length=40, unique=True, default='')
     date_joined = models.DateTimeField(default=timezone.now)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
@@ -52,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    # REQUIRED_FIELDS = ['display_name', 'username']
+    REQUIRED_FIELDS = ['username']
 
     def __str__(self):
         return "@{}".format(self.username)
@@ -66,15 +66,15 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
-    firstname = models.CharField(max_length=40, default='')
-    lastname = models.CharField(max_length=40, default='')
-    bio = models.CharField(max_length=300, blank=True, default='')
+    firstname = models.CharField(max_length=40, default='', blank=True)
+    lastname = models.CharField(max_length=40, default='', blank=True)
+    bio = models.TextField(blank=True, default='')
     avatar = fields.ImageField(blank=True, null=True, upload_to='avatar_photos/',
                                dependencies=[
         FileDependency(attname='avatar_png', processor=ImageProcessor(
             format='PNG', scale={'max_width': 150, 'max_height': 150})),
     ])
-    skills = models.ManyToManyField('projects.Skill')
+    skills = models.ManyToManyField('projects.Skill', blank=True, default='')
 
     def get_absolute_url(self):
         return reverse("accounts:profile", {'username': self.username})
