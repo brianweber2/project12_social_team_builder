@@ -10,7 +10,8 @@ from django.conf import settings
 from django.core.urlresolvers import reverse
 
 from smartfields import fields
-from multiselectfield import MultiSelectField
+from smartfields.dependencies import FileDependency
+from smartfields.processors import ImageProcessor
 
 
 class UserManager(BaseUserManager):
@@ -64,35 +65,22 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 
 class UserProfile(models.Model):
-    PYTHON = 'python'
-    ANDROID = 'android'
-    DESIGNER = 'designer'
-    JAVA = 'java'
-    PHP = 'php'
-    RAILS = 'rails'
-    WORDPRESS = 'wordpress'
-    IOS = 'ios'
-    USER_SKILL_CHOICES = (
-        (ANDROID, 'Android Developer'),
-        (DESIGNER, 'Designer'),
-        (JAVA, 'Java Developer'),
-        (PHP, 'PHP Developer'),
-        (PYTHON, 'Python Developer'),
-        (RAILS, 'Rails Developer'),
-        (WORDPRESS, 'Wordpress Developer'),
-        (IOS, 'iOS Developer')
-
-    )
-
     user = models.OneToOneField(settings.AUTH_USER_MODEL)
     firstname = models.CharField(max_length=40, default='')
     lastname = models.CharField(max_length=40, default='')
     bio = models.CharField(max_length=300, blank=True, default='')
-    avatar = fields.ImageField(blank=True, null=True, upload_to='accounts/avatars')
-    skills = MultiSelectField(choices=USER_SKILL_CHOICES, null=True)
+    avatar = fields.ImageField(blank=True, null=True, upload_to='avatar_photos/',
+                               dependencies=[
+        FileDependency(attname='avatar_png', processor=ImageProcessor(
+            format='PNG', scale={'max_width': 150, 'max_height': 150})),
+    ])
+    skills = models.ManyToManyField('projects.Skill')
 
     def get_absolute_url(self):
         return reverse("accounts:profile", {'username': self.username})
+
+    def __str__(self):
+        return '{} {}'.format(self.firstname, self.lastname)
 
 
 def create_user_profile(sender, instance, created, **kwargs):

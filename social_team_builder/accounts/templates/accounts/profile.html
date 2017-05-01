@@ -70,15 +70,19 @@
 
       <div class="circle--secondary--module">
         <div class="circle--primary--avatar">
-
+          {% if user.userprofile.avatar %}
+            <img src="{{ user.userprofile.avatar.url }}" height="150px">
+          {% else %}
+            <img src="{% static 'images/avatar_placeholder.jpg' %}" width="150px" height="150px">
+          {% endif %}
         </div>
       </div>
 
       <div class="circle--secondary--module">
         <h4>My Skills</h4>
         <ul class="unloaded">
-        {% for skill in userprofile.skills %}
-          <li>{{ skill|title }}</li>
+        {% for skill in skills %}
+          <li>{{ skill }}</li>
         {% endfor %}
         </ul>
       </div>

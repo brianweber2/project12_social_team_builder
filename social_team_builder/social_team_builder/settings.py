@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
     'smartfields',
     'multiselectfield',
     'bootstrap3',
-    'accounts'
+    'accounts',
+    'projects'
 ]
 
 MIDDLEWARE = [
@@ -127,3 +129,8 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
 LOGIN_REDIRECT_URL = "accounts:signin"
 
 AUTH_USER_MODEL = "accounts.User"
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'static', 'media')
+MEDIA_URL = '/media/'
+
+SITE_ID = 1

@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.views import generic
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
+from django.contrib.auth.decorators import login_required
 
 from braces.views import LoginRequiredMixin
 
@@ -44,12 +45,19 @@ class LogoutView(generic.RedirectView):
         return super(LogoutView, self).get(request, *args, **kwargs)
 
 
-class UserProfileView(LoginRequiredMixin, generic.DetailView):
+class UserProfileView(LoginRequiredMixin, generic.TemplateView):
     """View for use to view their profile information."""
-    model = models.UserProfile
     template_name = 'accounts/profile.html'
-    slug_field = 'user__username'
-    slug_url_kwarg = 'username'
+
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileView, self).get_context_data(**kwargs)
+        lookup = kwargs.get('username')
+        user = models.User.objects.get(username=lookup)
+        profile = models.UserProfile.objects.prefetch_related('skills').get(user=user)
+        context['profile'] = profile
+        context['skills'] = [skill for skill in profile.skills.all()]
+        print(context['skills'])
+        return context
 
 
 class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.UpdateView):
@@ -73,11 +81,12 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.Upd
     # Make sure both models are saved on POST request
     def post(self, request, *args, **kwargs):
         self.object = self.get_object()
-        form = self.form_class(request.POST, instance=request.user)
-        form2 = self.second_form_class(request.POST, instance=request.user.userprofile)
-
-        print("Form is valid? {}".format(form.is_valid()))
-        print("Form2 is valid? {}".format(form2.is_valid()))
+        form = self.form_class(data=request.POST, instance=request.user)
+        form2 = self.second_form_class(
+            data=request.POST,
+            instance=request.user.userprofile,
+            files=request.FILES
+        )
 
         if form.is_valid() and form2.is_valid():
             userdata = form.save(commit=False)
