@@ -6,6 +6,7 @@ from django.views import generic
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
+from django.conf import settings
 
 from braces.views import LoginRequiredMixin
 
@@ -48,6 +49,7 @@ class LogoutView(generic.RedirectView):
 class UserProfileView(LoginRequiredMixin, generic.TemplateView):
     """View for use to view their profile information."""
     template_name = 'accounts/profile.html'
+    login_url = settings.LOGIN_REDIRECT_URL
 
     def get_context_data(self, **kwargs):
         context = super(UserProfileView, self).get_context_data(**kwargs)
@@ -67,6 +69,7 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.Upd
     slug_url_kwarg = 'username'
     form_class = forms.UserUpdateForm
     second_form_class = forms.UserProfileUpdateForm
+    login_url = settings.LOGIN_REDIRECT_URL
 
     # Allow two forms to be shown in the view
     def get_context_data(self, **kwargs):
