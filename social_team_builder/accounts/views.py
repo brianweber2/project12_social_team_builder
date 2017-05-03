@@ -66,7 +66,7 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.Upd
     slug_field = 'username'
     slug_url_kwarg = 'username'
     form_class = forms.UserUpdateForm
-    second_form_class = forms.UserProfileUpdateform
+    second_form_class = forms.UserProfileUpdateForm
 
     # Allow two forms to be shown in the view
     def get_context_data(self, **kwargs):

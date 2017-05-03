@@ -61,7 +61,7 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['email', 'username']
 
 
-class UserProfileUpdateform(forms.ModelForm):
+class UserProfileUpdateForm(forms.ModelForm):
     """Update UserProfile model information."""
     firstname = forms.CharField(
                     label='First Name',

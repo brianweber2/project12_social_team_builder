@@ -74,10 +74,10 @@ class UserProfile(models.Model):
         FileDependency(attname='avatar_png', processor=ImageProcessor(
             format='PNG', scale={'max_width': 150, 'max_height': 150})),
     ])
-    skills = models.ManyToManyField('projects.Skill', blank=True, default='')
+    skills = models.ManyToManyField('projects.Skill', blank=True, default='', related_name='skills')
 
     def get_absolute_url(self):
-        return reverse("accounts:profile", {'username': self.username})
+        return reverse("accounts:profile", {'username': self.user.username})
 
     def __str__(self):
         return '{} {}'.format(self.firstname, self.lastname)
