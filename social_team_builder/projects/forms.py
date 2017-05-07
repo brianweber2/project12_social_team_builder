@@ -26,12 +26,20 @@ class CreateProjectForm(forms.ModelForm):
             attrs={'placeholder': 'Time estimate', 'class': 'circle--textarea--input'}
         )
     )
+    requirements = forms.CharField(
+        label='',
+        required=True,
+        widget=forms.Textarea(
+            attrs={'placeholder': ''}
+        )
+    )
 
     class Meta:
         fields = (
             'title',
             'description',
-            'time_estimate'
+            'time_estimate',
+            'requirements'
         )
         model = models.Project
 
@@ -57,6 +65,12 @@ class CreatePositionForm(forms.ModelForm):
         fields = (
             'name',
             'description',
-            'related_skill'
         )
         model = models.Position
+
+PositionFormset = forms.modelformset_factory(
+    models.Position,
+    form=CreatePositionForm,
+    extra=1,
+    max_num=5
+)

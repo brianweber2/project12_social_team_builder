@@ -34,32 +34,34 @@
         </div>
 
         <h2>Past Projects</h2>
-        <table class="u-full-width circle--table">
-          <thead>
-            <tr>
-              <th>Project Title</th>
-              <th class="circle--cell--right">Project Needs</th>
-            </tr>
-          </thead>
+      <table class="u-full-width circle--table">
+        <thead>
+          <tr>
+            <th>Project Title</th>
+            <th class="circle--cell--right">Project Needs</th>
+          </tr>
+        </thead>
+        {% if past_projects %}
           <tbody>
-            <tr class="clickable-row" data-href="project.html">
+          {% for past_project in past_projects %}
+            <tr class="clickable-row" data-href="#">
               <td>
-                <h3>Invoice Delivery Tool</h3>
+                <h3>{{ past_project.title }}</h3>
               </td>
               <td class="circle--cell--right">
-                <span class="secondary-label">Rails Developer</span>
+                <span class="secondary-label">{{ past_project.requirements|title }}</span>
               </td>
             </tr>
-            <tr class="clickable-row" data-href="project.html">
-              <td>
-                <h3>Twitter Client</h3>
-              </td>
-              <td class="circle--cell--right">
-                <span class="secondary-label">Designer</span>
-              </td>
-            </tr>
+          {% endfor %}
           </tbody>
-        </table>
+          {% else %}
+            <tr>
+              <td>
+                <h3>No completed projects yet.</h3>
+              </td>
+            </tr>
+          {% endif %}
+      </table>
       </div>
 
       <div class="grid-25 grid-push-5">

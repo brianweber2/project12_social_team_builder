@@ -27,9 +27,10 @@
           <h2>Positions</h2>
 
           <ul class="circle--group--list circle--clone--list">
+
             <li>
-              {% bootstrap_field form2.name %}
-              {% bootstrap_field form2.description %}
+            {{ form2.management_form }}
+            {{ form2 }}
               <a class="circle--clone--add">Add Position</a>
               <a class="circle--clone--remove">Remove</a>
             </li>
@@ -48,7 +49,7 @@
 
         <div class="circle--secondary--module">
           <h3>Applicant Requirements</h3>
-          {% bootstrap_field form2.related_skill %}
+          {% bootstrap_field form.requirements %}
         </div>
 
       </div>

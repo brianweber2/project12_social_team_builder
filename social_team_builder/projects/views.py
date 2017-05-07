@@ -16,7 +16,7 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
     template_name = 'projects/project_new.html'
     login_url = settings.LOGIN_REDIRECT_URL
     form_class = forms.CreateProjectForm
-    second_form_class = forms.CreatePositionForm
+    second_form_class = forms.PositionFormset
 
     def get_context_data(self, **kwargs):
         context = super(CreateProjectView, self).get_context_data(**kwargs)
@@ -34,9 +34,11 @@ class CreateProjectView(LoginRequiredMixin, generic.CreateView):
             new_project = form.save(commit=False)
             new_project.owner = request.user
             new_project.save()
-            new_position = form2.save(commit=False)
-            new_position.project = new_project
-            new_position.save()
+            new_positions = form2.save(commit=False)
+
+            for new_position in new_positions:
+                new_position.project = new_project
+                new_position.save()
             messages.success(request, "{} has been successfully added!".format(new_project.title))
             return HttpResponseRedirect(reverse('home'))
         else:

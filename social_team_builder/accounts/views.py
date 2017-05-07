@@ -6,12 +6,14 @@ from django.views import generic
 from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 from django.conf import settings
 
 from braces.views import LoginRequiredMixin
 
 from . import forms
 from . import models
+from projects.models import Project
 
 
 class SignUpView(SuccessMessageMixin, generic.CreateView):
@@ -58,6 +60,14 @@ class UserProfileView(LoginRequiredMixin, generic.TemplateView):
         profile = models.UserProfile.objects.prefetch_related('skills').get(user=user)
         context['profile'] = profile
         context['skills'] = [skill for skill in profile.skills.all()]
+
+        projects = Project.objects.all()
+        context['current_projects'] = projects.filter(
+            Q(owner=user) & Q(complete=False)
+        )
+        context['past_projects'] = projects.filter(
+            Q(owner=user) & Q(complete=True)
+        )
         return context
 
 
@@ -78,6 +88,11 @@ class UserProfileUpdateView(LoginRequiredMixin, SuccessMessageMixin, generic.Upd
             context['form'] = self.form_class(instance=self.request.user)
         if 'form2' not in context:
             context['form2'] = self.second_form_class(instance=self.request.user.userprofile)
+
+        projects = Project.objects.all()
+        context['past_projects'] = projects.filter(
+            Q(owner=self.request.user) & Q(complete=True)
+        )
         return context
 
     # Make sure both models are saved on POST request
