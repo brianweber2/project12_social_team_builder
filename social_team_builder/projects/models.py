@@ -34,6 +34,7 @@ class Skill(models.Model):
 class Project(models.Model):
     title = models.CharField(max_length=50, default='')
     description = models.TextField(default='')
+    time_estimate = models.TextField(default='')
     owner = models.OneToOneField(settings.AUTH_USER_MODEL)
     recruited = models.BooleanField(default=False)
     complete = models.BooleanField(default=False)
@@ -43,11 +44,13 @@ class Project(models.Model):
 
 
 class Position(models.Model):
-    project = models.ForeignKey(Project)
-    expertise = models.OneToOneField(Skill)
+    project = models.ForeignKey(Project, default='', on_delete=models.CASCADE, related_name='positions')
+    name = models.CharField(max_length=50, default='')
+    description = models.TextField(default='')
+    related_skill = models.OneToOneField(Skill)
 
     def __str__(self):
-        return '{} - {}'.format(self.project.title.title(), self.expertise.name)
+        return '{} - {}'.format(self.project.title.title(), self.related_skill.name)
 
 
 class Application(models.Model):

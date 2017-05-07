@@ -38,7 +38,7 @@ class UserCreateForm(UserCreationForm):
             "password1",
             "password2"
         )
-        model = get_user_model()
+        model = User
 
 
 class UserUpdateForm(forms.ModelForm):
@@ -57,7 +57,7 @@ class UserUpdateForm(forms.ModelForm):
                         'placeholder': 'Enter a username...'}
                 ))
     class Meta:
-        model = get_user_model()
+        model = User
         fields = ['email', 'username']
 
 
